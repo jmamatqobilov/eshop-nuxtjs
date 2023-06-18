@@ -1,6 +1,6 @@
 <template>
-  <v-app class="section-1">
-    <v-app-bar color="rgb(255, 175, 2)" dense :clipped-left="clipped" fixed app class="navbar-items">
+  <div class="section-1 dark">
+    <!-- <v-app-bar dense :clipped-left="clipped" fixed app class="dark:bg-slate-300">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="haeder-link">E commerce</v-toolbar-title>
       <nuxt-link to="/">
@@ -23,74 +23,70 @@
         </v-toolbar-title>
       </nuxt-link>
       <div class="account-user">
-        {{ userN }}
+        c
       </div>
       <div class="">
 
       </div>
-    </v-app-bar>
-    <v-main>
+    </v-app-bar> -->
+    <Navbar />
+    <v-main class="dark:bg-gray-900">
       <Nuxt keep-alive />
     </v-main>
-  </v-app>
+    <Footer/>
+  </div>
 </template>
 
 <script>
+import Footer from "../components/Footer.vue"
+import Navbar from "../components/Navbar.vue"
 export default {
-  name: 'DefaultLayout',
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
-    }
-  },
-  computed: {
-    userN() {
-      return this.$store.getters.userName
+    name: "DefaultLayout",
+    data() {
+        return {
+            clipped: false,
+            drawer: false,
+            fixed: false,
+            miniVariant: false,
+            right: true,
+            rightDrawer: false,
+            title: "Vuetify.js",
+        };
     },
-    
-  },
-
-  methods: {
-    logout() {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      this.$router.push('/')
-      console.log("logout")
+    methods: {
+        logout() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            this.$router.push("/");
+            console.log("logout");
+        },
+        //     NO VUEX BASIC VUE LIFECYCLE
+        // async getUser(){
+        //   const token = localStorage.getItem('token')
+        //   console.log(token)
+        //   const config = {
+        //             headers: { 'Authorization': `Bearer ${token}` }
+        //         }
+        //   await this.$axios.$get('http://localhost:4000/api/user',config)
+        //   .then((res)=>{
+        //     res
+        //     console.log(res)
+        //     this.$store.commit('setUser',res)
+        //   })
+        // }
+        getUser() {
+            this.$store.dispatch("getUser");
+        }
     },
-
-
-    //     NO VUEX BASIC VUE LIFECYCLE
-    // async getUser(){
-    //   const token = localStorage.getItem('token')
-    //   console.log(token)
-    //   const config = {
-    //             headers: { 'Authorization': `Bearer ${token}` }
-    //         }
-    //   await this.$axios.$get('http://localhost:4000/api/user',config)
-    //   .then((res)=>{
-    //     res
-    //     console.log(res)
-    //     this.$store.commit('setUser',res)
-    //   })
-    // }
-
-    getUser() {
-      this.$store.dispatch('getUser')
+    mounted() {
+        if (!this.userN) {
+            this.getUser();
+        }
+        let cart = JSON.parse(localStorage.getItem('prcart'));
+        if(cart) {
+          this.$store.commit('setAllCart', cart)
+        }
     }
-  },
-
-  mounted() {
-    if (!this.userN) {
-      this.getUser()
-    }
-  }
-
 }
 </script>
 
@@ -185,23 +181,23 @@ a {
 
 
 
-body{
-    font-family: 'Montserrat', sans-serif;
-  }
-  body::-webkit-scrollbar-track{ 
-    background:#e0cffa; 
-   
-  } 
-  
-  body::-webkit-scrollbar{ 
-    width: 10px; 
-    
-    padding: 0 1px; 
-    background-color: #c2f5d6; 
-  } 
-  body::-webkit-scrollbar-thumb{ 
-    background-color: #1a86da;
-    border-radius: 10px;
-  }
+body {
+  font-family: 'Montserrat', sans-serif;
+}
 
-</style>
+body::-webkit-scrollbar-track {
+  background: #e0cffa;
+
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+
+  padding: 0 1px;
+  background-color: #c2f5d6;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #1a86da;
+  border-radius: 10px;
+}</style>
